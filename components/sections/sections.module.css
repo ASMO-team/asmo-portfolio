@@ -1,0 +1,96 @@
+.thirdSection {
+    display: grid;
+    grid-template-columns: 
+        minmax(20px, 1fr) 
+        minmax(min-content, 900px) 
+        minmax(min-content, 900px) 
+        minmax(20px, 1fr);
+    grid-template-rows: auto repeat(2, auto);
+    grid-template-areas: 
+        ". header header ."
+        ". box1 box2 ."
+        ". box3 box4 .";
+    gap: 46px;
+     justify-items: center; /* Добавь эту строку */
+    align-items: center;
+    padding: 40px 0;
+}
+
+.headerArea { 
+    grid-area: header; 
+    text-align: center;
+}
+
+.thirdBox1 { grid-area: box1; }
+.thirdBox2 { grid-area: box2; }
+.thirdBox3 { grid-area: box3; }
+.thirdBox4 { grid-area: box4; }
+
+/* Custom Numbered List Styles */
+.customNumberedList {
+  list-style: none;
+  counter-reset: custom-counter;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+/* Стили для элементов списка с номерами */
+.customNumberedList > li {
+  counter-increment: custom-counter;
+  display: flex;
+  align-items: flex-start;
+  position: relative;
+  padding-left: 72px; /* Увеличил отступ для номера */
+}
+
+ 
+
+/* Мобильная адаптация (до 767px) */
+@media (max-width: 767px) {
+  .thirdSection {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto repeat(4, auto);
+    grid-template-areas: 
+      "header"
+      "box1"
+      "box2" 
+      "box3"
+      "box4";
+    gap: 24px;
+    padding: 24px 0;
+  }
+  
+  .headerArea {
+    padding: 0 16px;
+  }
+  
+  .customNumberedList {
+    gap: 24px;
+  }
+  
+  .customNumberedList > li {
+    padding-left: 60px; /* Увеличил отступ для мобильных */
+  }
+  
+  .customNumberedList > li::before {
+    width: 28px;
+    height: 28px;
+    font-size: 12px;
+    left: 20px; /* Увеличил отступ слева для мобильных */
+  }
+}
+
+/* Планшетная адаптация (768px - 1024px) */
+@media (min-width: 768px) and (max-width: 1024px) {
+  .thirdSection {
+    gap: 48px;
+    padding: 32px 0;
+  }
+  
+  .customNumberedList {
+    gap: 40px;
+  }
+}
