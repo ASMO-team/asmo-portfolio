@@ -1,5 +1,5 @@
 "use client";
-import dynamic from "next/dynamic";
+ 
 import * as React from "react";
 import { iconRegistry } from "./iconRegistry";
 import type { IconName, IconLoader } from "./iconTypes";
@@ -19,36 +19,53 @@ type Props = {
   ssr?: boolean;
 };
 
+// Кеш для уже загруженных иконок
+const iconComponentCache = new Map<IconName, React.ComponentType<IconProps>>();
+
 export default function Icon({
   name,
   width,
   height,
   className,
   title,
-  ssr = false,
+ 
 }: Props) {
-  const loader = iconRegistry[name] as IconLoader;
+  const [SvgIcon, setSvgIcon] = React.useState<React.ComponentType<IconProps> | null>(null);
 
-  const SvgIcon = React.useMemo(() => {
-    return dynamic<IconProps>(
-      () =>
-        loader().then((mod) => {
-          if (mod.default) return mod.default;
-          return mod;
-        }),
-      {
-        ssr,
-        loading: () => <span className={className} aria-hidden />,
+  React.useEffect(() => {
+    const loadIcon = async () => {
+      // Проверяем кеш
+      if (iconComponentCache.has(name)) {
+        setSvgIcon(iconComponentCache.get(name)!);
+        return;
       }
-    );
-  }, [loader, ssr, className]);
+
+      try {
+        const loader = iconRegistry[name] as IconLoader;
+        const iconModule = await loader();
+        const IconComponent = iconModule.default || iconModule;
+
+        // Сохраняем в кеш
+        iconComponentCache.set(name, IconComponent);
+        setSvgIcon(() => IconComponent);
+      } catch (error) {
+        console.error(`Failed to load icon: ${name}`, error);
+      }
+    };
+
+    loadIcon();
+  }, [name]);
 
   const ariaProps = title
     ? ({ role: "img", "aria-label": title } as const)
     : ({ "aria-hidden": true } as const);
 
+  // Пока иконка загружается, показываем плейсхолдер
+  if (!SvgIcon) {
+    return <span className={className} aria-hidden />;
+  }
+
   return (
-    // eslint-disable-next-line react-hooks/static-components
     <SvgIcon
       width={width}
       height={height}
