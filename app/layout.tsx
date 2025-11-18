@@ -5,7 +5,6 @@ import "./globals.css";
 const montserrat = Montserrat({
   weight: ["400", "700"],
   subsets: ["latin", "cyrillic"], // Добавил кириллицу для лучшей поддержки
-  display: "swap", // Для оптимизации загрузки
 });
 
 export const metadata: Metadata = {
