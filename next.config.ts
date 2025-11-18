@@ -2,7 +2,7 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   images: {
- 
+
     remotePatterns: [
       {
         protocol: 'https',
@@ -18,7 +18,7 @@ const nextConfig: NextConfig = {
         loaders: ['@svgr/webpack'],
         as: '*.js',
       },
-    }, 
+    },
   }
 };
 /*     webpack(config) {
