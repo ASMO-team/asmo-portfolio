@@ -1,5 +1,5 @@
 import { Project } from "@/interfaces/Project";
-import { API } from "../API";
+import { API } from "../../helpers/API";
 
 export default async function fetchMobileApplications(): Promise<Project[] | void> {
     try {
