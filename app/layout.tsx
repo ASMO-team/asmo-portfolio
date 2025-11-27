@@ -1,11 +1,12 @@
+// app/layout.tsx
 import type { Metadata } from "next";
 import { Montserrat } from "next/font/google";
 import "./globals.css";
+import { ThemeProvider } from "@/components/providers/ThemContext";
 
 const montserrat = Montserrat({
   weight: ["400", "700"],
-  subsets: ["latin", "cyrillic"], // Добавил кириллицу для лучшей поддержки
-  display: "swap", // Для оптимизации загрузки
+  subsets: ["latin", "cyrillic"],  
 });
 
 export const metadata: Metadata = {
@@ -15,13 +16,20 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body className={`${montserrat.className} antialiased`}>
-        {children}
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="light"
+          enableSystem
+          disableTransitionOnChange
+        >
+          {children}
+        </ThemeProvider>
       </body>
     </html>
   );

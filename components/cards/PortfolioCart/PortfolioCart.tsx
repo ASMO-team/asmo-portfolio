@@ -1,23 +1,49 @@
 'use client';
 import Image from "next/image";
+import Link from "next/link";
 import { FC } from "react";
+import { useTheme } from '@/hooks/useTheme';
 import cn from "classnames";
 import { PortfolioCartProps } from "./PortfolioCart.props";
-import { H } from "../Htag/H";
-import { P } from "../Ptag/P";
+import { H } from "@/components/typography/Htag/H";
+import { P } from "@/components/typography/Ptag/P";
 
 const PortfolioCart: FC<PortfolioCartProps> = ({
+  id,
   imageUrl,
   title,
   description,
   className = "",
 }) => {
+  const { theme, mounted } = useTheme();
+
+  if (!mounted) {
+    return (
+      <div className={cn(
+        "rounded-2xl shadow-lg animate-pulse",
+        "border",
+        className
+      )}>
+        <div className="h-48 sm:h-56 md:h-64 lg:h-72 bg-gray-300 dark:bg-gray-700 rounded-t-2xl"></div>
+        <div className="p-4 sm:p-6 md:p-8 bg-gray-200 dark:bg-gray-800 rounded-b-2xl">
+          <div className="h-6 bg-gray-300 dark:bg-gray-700 rounded mb-3"></div>
+          <div className="h-4 bg-gray-300 dark:bg-gray-700 rounded mb-2"></div>
+          <div className="h-4 bg-gray-300 dark:bg-gray-700 rounded w-3/4"></div>
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <div
+    <Link
+      href={`/portfolio/${id}`}
       className={cn(
-        "group relative overflow-hidden rounded-2xl bg-white shadow-lg",
+        "group relative overflow-hidden rounded-2xl shadow-lg",
         "transition-all duration-300 hover:shadow-2xl",
-        "border border-gray-200 hover:border-red-500",
+        "border focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50",
+        theme === 'light' 
+          ? "bg-white border-gray-200 hover:border-red-500" 
+          : "bg-gray-800 border-gray-700 hover:border-red-500",
         className
       )}
     >
@@ -51,14 +77,18 @@ const PortfolioCart: FC<PortfolioCartProps> = ({
           type="h3" 
           isNotCenter
           className={cn(
-            "mb-3 md:mb-4 transition-colors group-hover:text-red-500"
+            "mb-3 md:mb-4 transition-colors group-hover:text-red-500",
+            theme === 'light' ? "text-gray-900" : "text-white"
           )}
         >
           {title}
         </H>
         
         {/* Description */}
-        <P className="text-gray-700 leading-relaxed">
+        <P className={cn(
+          "leading-relaxed transition-colors",
+          theme === 'light' ? "text-gray-700" : "text-gray-300"
+        )}>
           {description}
         </P>
         
@@ -79,7 +109,7 @@ const PortfolioCart: FC<PortfolioCartProps> = ({
           "group-hover:border-red-500"
         )} 
       />
-    </div>
+    </Link>
   );
 };
 

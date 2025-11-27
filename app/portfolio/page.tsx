@@ -1,16 +1,19 @@
 'use client';
 import { useState, useEffect } from 'react';
-import PortfolioCart from "@/components/PortfolioCart/PortfolioCart";
-import { H } from "@/components/Htag/H";
-import { P } from "@/components/Ptag/P";
+import PortfolioCart from '@/components/cards/PortfolioCart/PortfolioCart';
+import { H } from '@/components/typography/Htag/H';
+import { P } from '@/components/typography/Ptag/P';
 import { useRouter } from "next/navigation";
+import { useTheme } from '@/hooks/useTheme';
+import classNames from 'classnames';
 import fetchWebApplications from '@/actions/projects/getWebApplications';
 import fetchMobileApplications from '@/actions/projects/getMobileApplications';
-import fetchBots from '@/actions/projects/GetBots';
+import fetchBots from '@/actions/projects/getBots';
 import { Project } from "@/interfaces/Project";
 
 export default function Portfolio() {
   const router = useRouter();
+  const { theme, mounted } = useTheme();
   const [webProjects, setWebProjects] = useState<Project[]>([]);
   const [mobileProjects, setMobileProjects] = useState<Project[]>([]);
   const [botProjects, setBotProjects] = useState<Project[]>([]);
@@ -89,7 +92,10 @@ export default function Portfolio() {
     if (loading) {
       return (
         <div className="text-center py-8">
-          <P center className="text-gray-600">
+          <P center className={classNames(
+            "transition-colors duration-300",
+            theme === 'light' ? "text-gray-600" : "text-gray-400"
+          )}>
             Загрузка {title.toLowerCase()}...
           </P>
         </div>
@@ -109,7 +115,10 @@ export default function Portfolio() {
     if (projects.length === 0) {
       return (
         <div className="text-center py-8">
-          <P center className="text-gray-500">
+          <P center className={classNames(
+            "transition-colors duration-300",
+            theme === 'light' ? "text-gray-500" : "text-gray-400"
+          )}>
             {title} не найдены
           </P>
         </div>
@@ -120,6 +129,7 @@ export default function Portfolio() {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
         {projects.map((project) => (
           <PortfolioCart
+            id={project.id}
             key={project.id}
             imageUrl={project.img}
             title={project.name}
@@ -131,12 +141,28 @@ export default function Portfolio() {
     );
   };
 
+  if (!mounted) {
+    return (
+      <div className="min-h-screen bg-gray-200 dark:bg-gray-800 animate-pulse"></div>
+    );
+  }
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 py-12 px-4 sm:px-6 lg:px-8 relative">
+    <div className={classNames(
+      "min-h-screen py-12 px-4 sm:px-6 lg:px-8 relative transition-colors duration-300",
+      theme === 'light' 
+        ? "bg-linear-to-br from-gray-50 to-gray-100" 
+        : "bg-linear-to-br from-gray-900 to-gray-800"
+    )}>
       {/* Кнопка назад */}
       <button
         onClick={handleGoBack}
-        className="absolute top-6 left-4 sm:left-6 lg:left-8 flex items-center gap-2 text-gray-600 hover:text-gray-900 transition-colors duration-300 group"
+        className={classNames(
+          "absolute top-6 left-4 sm:left-6 lg:left-8 flex items-center gap-2 transition-colors duration-300 group",
+          theme === 'light' 
+            ? "text-gray-600 hover:text-gray-900" 
+            : "text-gray-400 hover:text-white"
+        )}
       >
         <svg 
           className="w-5 h-5 transform group-hover:-translate-x-1 transition-transform" 
@@ -151,10 +177,16 @@ export default function Portfolio() {
 
       {/* Заголовок страницы */}
       <div className="max-w-7xl mx-auto text-center mb-16 pt-8">
-        <H type="h1" className="text-gray-900 mb-4">
+        <H type="h1" className={classNames(
+          "mb-4 transition-colors duration-300",
+          theme === 'light' ? "text-gray-900" : "text-white"
+        )}>
           Наше <span className="text-red-500">Портфолио</span>
         </H>
-        <P center className="text-gray-600 max-w-3xl mx-auto">
+        <P center className={classNames(
+          "max-w-3xl mx-auto transition-colors duration-300",
+          theme === 'light' ? "text-gray-600" : "text-gray-300"
+        )}>
           Исследуйте наши лучшие проекты, где инновации встречаются с дизайном
         </P>
         
@@ -166,10 +198,16 @@ export default function Portfolio() {
         {/* Секция веб-приложений */}
         <section>
           <div className="text-center mb-8">
-            <H type="h2" className="text-gray-900 mb-2">
+            <H type="h2" className={classNames(
+              "mb-2 transition-colors duration-300",
+              theme === 'light' ? "text-gray-900" : "text-white"
+            )}>
               Веб-приложения
             </H>
-            <P center className="text-gray-600">
+            <P center className={classNames(
+              "transition-colors duration-300",
+              theme === 'light' ? "text-gray-600" : "text-gray-300"
+            )}>
               Современные веб-решения для бизнеса
             </P>
           </div>
@@ -184,10 +222,16 @@ export default function Portfolio() {
         {/* Секция мобильных приложений */}
         <section>
           <div className="text-center mb-8">
-            <H type="h2" className="text-gray-900 mb-2">
+            <H type="h2" className={classNames(
+              "mb-2 transition-colors duration-300",
+              theme === 'light' ? "text-gray-900" : "text-white"
+            )}>
               Мобильные приложения
             </H>
-            <P center className="text-gray-600">
+            <P center className={classNames(
+              "transition-colors duration-300",
+              theme === 'light' ? "text-gray-600" : "text-gray-300"
+            )}>
               Кроссплатформенные мобильные решения
             </P>
           </div>
@@ -202,10 +246,16 @@ export default function Portfolio() {
         {/* Секция ботов */}
         <section>
           <div className="text-center mb-8">
-            <H type="h2" className="text-gray-900 mb-2">
+            <H type="h2" className={classNames(
+              "mb-2 transition-colors duration-300",
+              theme === 'light' ? "text-gray-900" : "text-white"
+            )}>
               Боты
             </H>
-            <P center className="text-gray-600">
+            <P center className={classNames(
+              "transition-colors duration-300",
+              theme === 'light' ? "text-gray-600" : "text-gray-300"
+            )}>
               Интеллектуальные боты для автоматизации
             </P>
           </div>
@@ -219,11 +269,22 @@ export default function Portfolio() {
       </div>
 
       {/* Призыв к действию */}
-      <div className="max-w-3xl mx-auto text-center mt-20 bg-white rounded-2xl p-8 shadow-lg border border-gray-200">
-        <H type="h2" className="text-gray-900 mb-4">
+      <div className={classNames(
+        "max-w-3xl mx-auto text-center mt-20 rounded-2xl p-8 shadow-lg border transition-colors duration-300",
+        theme === 'light' 
+          ? "bg-white border-gray-200" 
+          : "bg-gray-800 border-gray-700"
+      )}>
+        <H type="h2" className={classNames(
+          "mb-4 transition-colors duration-300",
+          theme === 'light' ? "text-gray-900" : "text-white"
+        )}>
           Готовы начать свой проект?
         </H>
-        <P center className="text-gray-600 mb-6">
+        <P center className={classNames(
+          "mb-6 transition-colors duration-300",
+          theme === 'light' ? "text-gray-600" : "text-gray-300"
+        )}>
           Свяжитесь с нами для обсуждения ваших идей и требований
         </P>
         <button className="bg-red-500 hover:bg-red-600 text-white font-semibold py-3 px-8 rounded-lg transition-colors duration-300 transform hover:scale-105">
