@@ -6,7 +6,11 @@ import { ThemeProvider } from "@/components/providers/ThemContext";
 
 const montserrat = Montserrat({
   weight: ["400", "700"],
+<<<<<<< HEAD
   subsets: ["latin", "cyrillic"],  
+=======
+  subsets: ["latin", "cyrillic"], // Добавил кириллицу для лучшей поддержки
+>>>>>>> 8d798706292aa4bc16de33629b8750609306666e
 });
 
 export const metadata: Metadata = {

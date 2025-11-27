@@ -14,8 +14,12 @@
   },
   "dependencies": {
     "classnames": "^2.5.1",
+<<<<<<< HEAD
     "next": "16.0.1",
     "next-themes": "^0.4.6",
+=======
+    "next": "^16.0.1",
+>>>>>>> 8d798706292aa4bc16de33629b8750609306666e
     "react": "19.2.0",
     "react-dom": "19.2.0",
     "styled-components": "^6.1.19"

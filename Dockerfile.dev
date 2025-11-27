@@ -1,9 +1,19 @@
-FROM node:20-alpine
+FROM node:20-bullseye
 
 WORKDIR /app
 
+# Установка дополнительных инструментов для сборки
+RUN apt-get update && apt-get install -y \
+    python3 \
+    make \
+    g++ \
+    && rm -rf /var/lib/apt/lists/*
+
 COPY package*.json ./
-RUN npm install
+
+# Очистка кэша и переустановка
+RUN npm cache clean --force
+RUN npm ci --only=production --build-from-source
 
 COPY . .
 RUN npm run build
